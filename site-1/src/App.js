@@ -1,6 +1,8 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+
+import { sitesUrls } from 'common'
+
+import './App.css'
 
 function App() {
   return (
@@ -14,9 +16,12 @@ function App() {
         >
           3rd Party Cookies Test Site A
         </a>
+        <a href={sitesUrls.siteB} target="_blank">
+          Go to Site B
+        </a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
