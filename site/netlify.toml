@@ -1,0 +1,4 @@
+[build]
+publish = './build'
+
+ignore = "git diff --quiet HEAD^ HEAD . ../common"
