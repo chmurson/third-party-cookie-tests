@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "third-party-cookie-tests/static/css/main.ab7136cd.chunk.css",
-    "main.js": "third-party-cookie-tests/static/js/main.a74792ae.chunk.js",
-    "main.js.map": "third-party-cookie-tests/static/js/main.a74792ae.chunk.js.map",
-    "runtime-main.js": "third-party-cookie-tests/static/js/runtime-main.d6c01a2b.js",
-    "runtime-main.js.map": "third-party-cookie-tests/static/js/runtime-main.d6c01a2b.js.map",
-    "static/js/2.f3b88070.chunk.js": "third-party-cookie-tests/static/js/2.f3b88070.chunk.js",
-    "static/js/2.f3b88070.chunk.js.map": "third-party-cookie-tests/static/js/2.f3b88070.chunk.js.map",
-    "static/js/3.33f6dbae.chunk.js": "third-party-cookie-tests/static/js/3.33f6dbae.chunk.js",
-    "static/js/3.33f6dbae.chunk.js.map": "third-party-cookie-tests/static/js/3.33f6dbae.chunk.js.map",
-    "index.html": "third-party-cookie-tests/index.html",
-    "static/css/main.ab7136cd.chunk.css.map": "third-party-cookie-tests/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.f3b88070.chunk.js.LICENSE.txt": "third-party-cookie-tests/static/js/2.f3b88070.chunk.js.LICENSE.txt",
-    "static/media/logo.103b5fa1.svg": "third-party-cookie-tests/static/media/logo.103b5fa1.svg"
+    "main.css": "/third-party-cookie-tests/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/third-party-cookie-tests/static/js/main.a74792ae.chunk.js",
+    "main.js.map": "/third-party-cookie-tests/static/js/main.a74792ae.chunk.js.map",
+    "runtime-main.js": "/third-party-cookie-tests/static/js/runtime-main.3135de0a.js",
+    "runtime-main.js.map": "/third-party-cookie-tests/static/js/runtime-main.3135de0a.js.map",
+    "static/js/2.f3b88070.chunk.js": "/third-party-cookie-tests/static/js/2.f3b88070.chunk.js",
+    "static/js/2.f3b88070.chunk.js.map": "/third-party-cookie-tests/static/js/2.f3b88070.chunk.js.map",
+    "static/js/3.33f6dbae.chunk.js": "/third-party-cookie-tests/static/js/3.33f6dbae.chunk.js",
+    "static/js/3.33f6dbae.chunk.js.map": "/third-party-cookie-tests/static/js/3.33f6dbae.chunk.js.map",
+    "index.html": "/third-party-cookie-tests/index.html",
+    "static/css/main.ab7136cd.chunk.css.map": "/third-party-cookie-tests/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.f3b88070.chunk.js.LICENSE.txt": "/third-party-cookie-tests/static/js/2.f3b88070.chunk.js.LICENSE.txt",
+    "static/media/logo.103b5fa1.svg": "/third-party-cookie-tests/static/media/logo.103b5fa1.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d6c01a2b.js",
+    "static/js/runtime-main.3135de0a.js",
     "static/js/2.f3b88070.chunk.js",
     "static/css/main.ab7136cd.chunk.css",
     "static/js/main.a74792ae.chunk.js"
