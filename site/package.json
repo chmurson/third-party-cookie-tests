@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-for-gh-pages": "PUBLIC_URL=third-party-cookie-tests yarn build",
+    "build-for-gh-pages": "PUBLIC_URL=/third-party-cookie-tests yarn build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
