@@ -16,9 +16,7 @@ jobs:
         working-directory: site
         run: |
           yarn install
-          yarn build build-for-gh-pages
-        env:
-          PUBLIC_URL: third-party-cookie-tests
+          yarn build-for-gh-pages
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
