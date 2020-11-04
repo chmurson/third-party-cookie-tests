@@ -1,7 +1,6 @@
 {
   "name": "site",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -17,7 +16,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start && cd ../third-party-content && yarn start",
     "build": "react-scripts build",
     "build-for-gh-pages": "PUBLIC_URL=/third-party-cookie-tests yarn build",
     "test": "react-scripts test",
