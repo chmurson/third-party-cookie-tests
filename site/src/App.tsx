@@ -27,7 +27,7 @@ function App() {
                 </div>
                 <p className={clsx({ [styles.invisible]: !iframeVisible })}>Iframe URL: {SHOWCOOKIE2ME_URL}</p>
             </div>
-            <iframe className={clsx(styles.iframe, { [styles.iframeVisible]: iframeVisible })}
+            <iframe title="A note maker" className={clsx(styles.iframe, { [styles.iframeVisible]: iframeVisible })}
                     src={SHOWCOOKIE2ME_URL} />
 
         </div>
