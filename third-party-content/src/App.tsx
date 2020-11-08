@@ -23,7 +23,6 @@ function App() {
     }, [text, setText, addEntry])
 
     const onKeyPress = useCallback<KeyboardEventHandler<HTMLTextAreaElement>>((e) => {
-        console.log('Keypressed')
         if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
             handleSubmission()
         }
