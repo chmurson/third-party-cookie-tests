@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, KeyboardEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { KeyboardEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
 import { Input, Button, Typography } from 'antd'
 import cookies from 'js-cookie'
 import styles from './App.module.scss'
@@ -20,7 +20,7 @@ function App() {
             text: text.trim(),
         })
         setText('')
-    }, [text, setText])
+    }, [text, setText, addEntry])
 
     const onKeyPress = useCallback<KeyboardEventHandler<HTMLTextAreaElement>>((e) => {
         console.log('Keypressed')
@@ -48,7 +48,6 @@ function App() {
 }
 
 const STATE_COOKIE_NAME = 'showcookie2mestate'
-const LAST_VISIT_COOKIE_NAME = 'showcookie2melastvisit'
 
 type Entry = {
     date: string,
