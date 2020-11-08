@@ -9,6 +9,12 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "classnames": "^2.2.6",
+    "clsx": "^1.1.1",
+    "node-sass": "^4.0.0",
+    "prettier": "^2.1.2",
+    "primeflex": "^2.0.0",
+    "primereact": "^5.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
@@ -16,7 +22,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start && cd ../third-party-content && yarn start",
+    "start": "concurrently \"react-scripts start \" \"cd ../third-party-content && PORT=3001 BROWSER=0 yarn start\"",
     "build": "react-scripts build",
     "build-for-gh-pages": "PUBLIC_URL=/third-party-cookie-tests yarn build",
     "test": "react-scripts test",
@@ -39,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }
