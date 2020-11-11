@@ -47,10 +47,12 @@ const NoteTaker: FC<{ storageAccessApi?: boolean }> = ({ storageAccessApi }) => 
             <div>
                 {sortedEntries.map(entry => (
                     <p className="p-field" key={entry.date}>
-                        <div
+                        <span
                             dangerouslySetInnerHTML={{ __html: decodeURIComponent(entry.text).replaceAll('\n', '</br>') }} />
-                        <div><Text type="secondary"><DateFormatter date={new Date(entry.date)} /></Text></div>
-                    </p>))}
+                        <br />
+                        <Text type="secondary"><DateFormatter date={new Date(entry.date)} /></Text>
+                    </p>
+                ))}
             </div>
         </div>
     )
@@ -80,8 +82,11 @@ function usePersistentEntryState(storageAccessApi?: boolean): [Entry[], (entry: 
 }
 
 
-const cookieStateConverers = {
+const cookieStateConverters = {
     decode: (cookieValue: any): Entry[] => {
+        if (!cookieValue) {
+            return []
+        }
         try {
             const decoded = window.atob('' + cookieValue)
             return JSON.parse(decodeURIComponent(decoded))
@@ -95,31 +100,29 @@ const cookieStateConverers = {
 }
 
 function useCookieState(storageAccessApi?: boolean) {
-    const { setCookie, getCookie } = useCookieAcccessMethods(storageAccessApi)
+    const { setCookie, getCookie } = useCookieAccessMethods(storageAccessApi)
 
-    return {
+    return useMemo(() => ({
         async setCookieState(state: Entry[]) {
-            await setCookie(STATE_COOKIE_NAME, cookieStateConverers.encode(state))
+            await setCookie(STATE_COOKIE_NAME, cookieStateConverters.encode(state))
         },
         async getCookieState(): Promise<Entry[]> {
             const cookieValue = await getCookie(STATE_COOKIE_NAME)
-            return cookieStateConverers.decode(cookieValue)
+            return cookieStateConverters.decode(cookieValue)
         },
-    }
+    }), [setCookie, getCookie])
 }
 
-function useCookieAcccessMethods(storageAccessApi?: boolean) {
-    if (!storageAccessApi) {
-        return {
-            async getCookie(key: string) {
-                cookies.get(key)
-            },
-            async setCookie(key: string, value: string) {
-                cookies.set(key, value)
-            },
-        }
-    }
-    return {
+function useCookieAccessMethods(storageAccessApi?: boolean) {
+    const normalMethods = useMemo(() => ({
+        async getCookie(key: string) {
+            return cookies.get(key)
+        },
+        async setCookie(key: string, value: string) {
+            cookies.set(key, value)
+        },
+    }), [])
+    const storageAccessApiMethods = useMemo(() => ({
         async getCookie(key: string) {
             try {
                 // @ts-ignore
@@ -134,14 +137,18 @@ function useCookieAcccessMethods(storageAccessApi?: boolean) {
             try {
                 // @ts-ignore
                 await document.requestStorageAccess()
-                return cookies.set(key, value)
+                cookies.set(key, value)
             } catch (e) {
                 console.error(e)
                 console.error('getCookie failed')
             }
         },
-    }
+    }), [])
 
+    if (storageAccessApi) {
+        return storageAccessApiMethods
+    }
+    return normalMethods
 }
 
 export default App
