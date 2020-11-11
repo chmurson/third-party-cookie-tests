@@ -1,5 +1,5 @@
 import React, { FC, KeyboardEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
-import { Input, Button, Typography } from 'antd'
+import { Input, Button, Typography, Alert } from 'antd'
 import cookies from 'js-cookie'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import styles from './App.module.scss'
@@ -38,6 +38,16 @@ const NoteTaker: FC<{ storageAccessApi?: boolean }> = ({ storageAccessApi }) => 
         }
     }, [handleSubmission])
 
+    if (storageAccessApi && !supportsStorageAccessAPI()) {
+        return <div className={styles.App}>
+            <Alert
+                message="Error"
+                description="Storage access API is not supported by this browser."
+                type="error"
+                showIcon
+            />
+        </div>
+    }
 
     return (
         <div className={styles.App}>
@@ -140,7 +150,7 @@ function useCookieAccessMethods(storageAccessApi?: boolean) {
                 cookies.set(key, value)
             } catch (e) {
                 console.error(e)
-                console.error('getCookie failed')
+                console.error('setCookie failed')
             }
         },
     }), [])
@@ -149,6 +159,11 @@ function useCookieAccessMethods(storageAccessApi?: boolean) {
         return storageAccessApiMethods
     }
     return normalMethods
+}
+
+function supportsStorageAccessAPI() {
+    //@ts-ignore
+    return document.requestStorageAccess != null
 }
 
 export default App
