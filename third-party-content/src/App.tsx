@@ -10,9 +10,9 @@ const { Text } = Typography
 
 function App() {
     return <Router><Switch>
-        <Route path="direct-document-cookie" render={() => <NoteTaker />} />
-        <Route path="request-storage-api" render={() => <NoteTaker storageAccessApi />} />
-        <Redirect to="direct-document-cookie" />
+        <Route path="/direct-document-cookie" render={() => <NoteTaker />} />
+        <Route path="/request-storage-api" render={() => <NoteTaker storageAccessApi />} />
+        <Redirect to="/direct-document-cookie" />
     </Switch>
     </Router>
 }
