@@ -62,9 +62,7 @@ export function App() {
 const IFrameContent: FC<{ url: string, iframeVisible: boolean }> = memo(({ iframeVisible, url }) => {
     const [spinning, setSpinning] = useState<boolean>(true)
     useEffect(() => {
-        if (!spinning) {
-            setSpinning(true)
-        }
+        setSpinning(true)
     }, [url])
 
     return <>
