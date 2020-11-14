@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/third-party-cookie-tests/static/css/main.086761ff.chunk.css",
-    "main.js": "/third-party-cookie-tests/static/js/main.fada5ce6.chunk.js",
-    "main.js.map": "/third-party-cookie-tests/static/js/main.fada5ce6.chunk.js.map",
-    "runtime-main.js": "/third-party-cookie-tests/static/js/runtime-main.c6c952f1.js",
-    "runtime-main.js.map": "/third-party-cookie-tests/static/js/runtime-main.c6c952f1.js.map",
+    "main.css": "/third-party-cookie-tests/static/css/main.edd3804f.chunk.css",
+    "main.js": "/third-party-cookie-tests/static/js/main.988519af.chunk.js",
+    "main.js.map": "/third-party-cookie-tests/static/js/main.988519af.chunk.js.map",
+    "runtime-main.js": "/third-party-cookie-tests/static/js/runtime-main.5490b744.js",
+    "runtime-main.js.map": "/third-party-cookie-tests/static/js/runtime-main.5490b744.js.map",
     "static/css/2.a3d98d37.chunk.css": "/third-party-cookie-tests/static/css/2.a3d98d37.chunk.css",
-    "static/js/2.9e882f11.chunk.js": "/third-party-cookie-tests/static/js/2.9e882f11.chunk.js",
-    "static/js/2.9e882f11.chunk.js.map": "/third-party-cookie-tests/static/js/2.9e882f11.chunk.js.map",
-    "static/js/3.9377216d.chunk.js": "/third-party-cookie-tests/static/js/3.9377216d.chunk.js",
-    "static/js/3.9377216d.chunk.js.map": "/third-party-cookie-tests/static/js/3.9377216d.chunk.js.map",
+    "static/js/2.f6556f60.chunk.js": "/third-party-cookie-tests/static/js/2.f6556f60.chunk.js",
+    "static/js/2.f6556f60.chunk.js.map": "/third-party-cookie-tests/static/js/2.f6556f60.chunk.js.map",
+    "static/js/3.06dcf656.chunk.js": "/third-party-cookie-tests/static/js/3.06dcf656.chunk.js",
+    "static/js/3.06dcf656.chunk.js.map": "/third-party-cookie-tests/static/js/3.06dcf656.chunk.js.map",
     "index.html": "/third-party-cookie-tests/index.html",
     "static/css/2.a3d98d37.chunk.css.map": "/third-party-cookie-tests/static/css/2.a3d98d37.chunk.css.map",
-    "static/css/main.086761ff.chunk.css.map": "/third-party-cookie-tests/static/css/main.086761ff.chunk.css.map",
-    "static/js/2.9e882f11.chunk.js.LICENSE.txt": "/third-party-cookie-tests/static/js/2.9e882f11.chunk.js.LICENSE.txt"
+    "static/css/main.edd3804f.chunk.css.map": "/third-party-cookie-tests/static/css/main.edd3804f.chunk.css.map",
+    "static/js/2.f6556f60.chunk.js.LICENSE.txt": "/third-party-cookie-tests/static/js/2.f6556f60.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.c6c952f1.js",
+    "static/js/runtime-main.5490b744.js",
     "static/css/2.a3d98d37.chunk.css",
-    "static/js/2.9e882f11.chunk.js",
-    "static/css/main.086761ff.chunk.css",
-    "static/js/main.fada5ce6.chunk.js"
+    "static/js/2.f6556f60.chunk.js",
+    "static/css/main.edd3804f.chunk.css",
+    "static/js/main.988519af.chunk.js"
   ]
 }
