@@ -1,7 +1,7 @@
 import React, { FC, KeyboardEventHandler, useCallback, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router'
 import styles from './note-taker-styles.module.scss'
-import { Alert, Button, Input, Typography } from 'antd'
+import { Alert, Button, Input, Space, Typography } from 'antd'
 import { DateFormatter } from '../../DateFormatter'
 import { StorageType, supportsStorageAccessAPI, usePersistentEntryState } from './hooks'
 
@@ -23,6 +23,9 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
         })
         setText('')
     }, [text, setText, addEntry])
+    const handleRefresh = useCallback(() => {
+        
+    }, [])
 
     const onKeyPress = useCallback<KeyboardEventHandler<HTMLTextAreaElement>>((e) => {
         if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
@@ -47,7 +50,11 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 
                 <TextArea rows={5} cols={30} value={text} onChange={e => setText(e.currentTarget.value)}
                           onKeyDown={onKeyPress} placeholder="Write a short note here" />
-                <Button onClick={handleSubmission} type="primary">Submit</Button>
+                <Space>
+                    <Button onClick={handleSubmission} type="primary">Submit</Button>
+                    <Button onClick={handleRefresh} type="default">Refresh</Button>
+
+                </Space>
             </div>
             <div>
                 {sortedEntries.map(entry => (

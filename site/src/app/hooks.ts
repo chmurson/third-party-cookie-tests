@@ -26,7 +26,6 @@ export function useLocalState() {
             useStorageAccessAPI: localState.useStorageAccessAPI ? '1' : '',
         }
         const searchURLPart = '?' + new URLSearchParams(localStateForSearch).toString()
-        console.log(searchURLPart);
         window.history.pushState(null, 'local stage change', searchURLPart)
     }, [localState])
 

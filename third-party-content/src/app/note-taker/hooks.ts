@@ -8,12 +8,18 @@ export type Entry = {
 
 export type StorageType = 'cookies' | 'localStorage';
 
-export function usePersistentEntryState(storageType: StorageType, storageAccessApi?: boolean): [Entry[], (entry: Entry) => void] {
+export function usePersistentEntryState(storageType: StorageType, storageAccessApi?: boolean): [Entry[], (entry: Entry) => void, () => void] {
     const [entries, setEntries] = useState<Entry[]>([])
     const { getStorageState, setStorageState } = useStorageState(storageType, storageAccessApi)
-    useEffect(() => {
+
+    const refreshFromStorage = useCallback(()=>{
         getStorageState().then(state => setEntries(state))
-    }, [getStorageState])
+    },[getStorageState,setEntries])
+
+    useEffect(() => {
+        refreshFromStorage()
+    }, [refreshFromStorage])
+
     const addEntry = useCallback((entry: Entry) => {
         setEntries((entries) => {
             const newEntries = [...entries, entry]
@@ -21,7 +27,8 @@ export function usePersistentEntryState(storageType: StorageType, storageAccessA
             return newEntries
         })
     }, [setStorageState, setEntries])
-    return [entries, addEntry]
+
+    return [entries, addEntry, refreshFromStorage]
 }
 
 function useStorageState(storageType: StorageType, storageAccessApi?: boolean) {
