@@ -72,7 +72,7 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
                     // @ts-ignore
                     await document.requestStorageAccess()
                 }
-                return window.localStorage.get(key)
+                return window.localStorage.getItem(key)
             } catch (e) {
                 console.error(e)
                 console.error('getStorageValue failed')
@@ -84,7 +84,7 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
                     // @ts-ignore
                     await document.requestStorageAccess()
                 }
-                window.localStorage.set(key, value)
+                window.localStorage.setItem(key, value)
             } catch (e) {
                 console.error(e)
                 console.error('setStorageValue failed')
@@ -92,10 +92,13 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
         },
     }), [storageAccessApi])
 
-    if (storageAccessApi) {
+    if (storageType === 'localStorage') {
         return localStorage
     }
-    return cookiesMethods
+    if (storageType === 'cookies') {
+        return cookiesMethods
+    }
+    throw new Error(`${storageType} is not supported`)
 }
 
 const STATE_COOKIE_NAME = 'showcookie2mestate'

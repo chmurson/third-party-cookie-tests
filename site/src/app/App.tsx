@@ -67,8 +67,9 @@ const IFrameContent: FC<{ url: string, iframeVisible: boolean }> = memo(({ ifram
 
     return <>
         <p className={clsx({ [styles.invisible]: !iframeVisible })}>Iframe
-            URL: {url}</p>
-        <Spin size="large" spinning={spinning} wrapperClassName={styles.iframeSpinWrapper} className={styles.iframeSpinWrapper}>
+            URL: <a href="url">{url}</a></p>
+        <Spin size="large" spinning={spinning} wrapperClassName={styles.iframeSpinWrapper}
+              className={styles.iframeSpinWrapper}>
             <iframe title="A note maker"
                     className={clsx(styles.iframe, { [styles.iframeVisible]: iframeVisible })}
                     src={url}
