@@ -12,9 +12,9 @@ export function usePersistentEntryState(storageType: StorageType, storageAccessA
     const [entries, setEntries] = useState<Entry[]>([])
     const { getStorageState, setStorageState } = useStorageState(storageType, storageAccessApi)
 
-    const refreshFromStorage = useCallback(()=>{
+    const refreshFromStorage = useCallback(() => {
         getStorageState().then(state => setEntries(state))
-    },[getStorageState,setEntries])
+    }, [getStorageState, setEntries])
 
     useEffect(() => {
         refreshFromStorage()
@@ -48,54 +48,30 @@ function useStorageState(storageType: StorageType, storageAccessApi?: boolean) {
 function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: boolean) {
     const cookiesMethods = useMemo(() => ({
         async getStorageValue(key: string) {
-            try {
-                if (storageAccessApi) {
-                    // @ts-ignore
-                    await document.requestStorageAccess()
-                }
-                return cookies.get(key)
-            } catch (e) {
-                console.error(e)
-                console.error('getStorageValue failed')
+            if (storageAccessApi) {
+                await assureRequestStorageAccess()
             }
+            return cookies.get(key)
         },
         async setStorageValue(key: string, value: string) {
-            try {
-                if (storageAccessApi) {
-                    // @ts-ignore
-                    await document.requestStorageAccess()
-                }
-                cookies.set(key, value)
-            } catch (e) {
-                console.error(e)
-                console.error('setStorageValue failed')
+            if (storageAccessApi) {
+                await assureRequestStorageAccess()
             }
+            cookies.set(key, value)
         },
     }), [storageAccessApi])
     const localStorage = useMemo(() => ({
         async getStorageValue(key: string) {
-            try {
-                if (storageAccessApi) {
-                    // @ts-ignore
-                    await document.requestStorageAccess()
-                }
-                return window.localStorage.getItem(key)
-            } catch (e) {
-                console.error(e)
-                console.error('getStorageValue failed')
+            if (storageAccessApi) {
+                await assureRequestStorageAccess()
             }
+            return window.localStorage.getItem(key)
         },
         async setStorageValue(key: string, value: string) {
-            try {
-                if (storageAccessApi) {
-                    // @ts-ignore
-                    await document.requestStorageAccess()
-                }
-                window.localStorage.setItem(key, value)
-            } catch (e) {
-                console.error(e)
-                console.error('setStorageValue failed')
+            if (storageAccessApi) {
+                await assureRequestStorageAccess()
             }
+            window.localStorage.setItem(key, value)
         },
     }), [storageAccessApi])
 
@@ -130,4 +106,29 @@ const cookieStateConverters = {
 export function supportsStorageAccessAPI() {
     //@ts-ignore
     return document.requestStorageAccess != null
+}
+
+async function assureRequestStorageAccess() {
+    try {
+        //@ts-ignore
+        await document.hasStorageAccess()
+        return
+    } catch (e) {
+        if (e == null) {
+            console.error('hasStorageAccess failed')
+        } else {
+            console.error(e)
+        }
+    }
+    try {
+        //@ts-ignore
+        await document.requestStorageAccess()
+        return
+    } catch (e) {
+        if (e == null) {
+            console.error('requestStorageAccess failed')
+        } else {
+            console.error(e)
+        }
+    }
 }
