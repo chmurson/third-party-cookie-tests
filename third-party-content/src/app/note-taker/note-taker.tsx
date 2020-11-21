@@ -11,7 +11,7 @@ const { Text } = Typography
 export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
     const { params: { useStorageAccessAPI } } = useRouteMatch<{ useStorageAccessAPI: string }>()
     const [text, setText] = useState<string>('')
-    const [entries, addEntry] = usePersistentEntryState(storage, !!useStorageAccessAPI)
+    const [entries, addEntry, refreshFromStorage] = usePersistentEntryState(storage, !!useStorageAccessAPI)
     const sortedEntries = useMemo(() => entries.sort((x, y) => new Date(y.date).getTime() - new Date(x.date).getTime()), [entries])
     const handleSubmission = useCallback(() => {
         if (!text.trim()) {
@@ -24,8 +24,8 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
         setText('')
     }, [text, setText, addEntry])
     const handleRefresh = useCallback(() => {
-        
-    }, [])
+        refreshFromStorage();
+    }, [refreshFromStorage])
 
     const onKeyPress = useCallback<KeyboardEventHandler<HTMLTextAreaElement>>((e) => {
         if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
