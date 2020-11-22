@@ -1,48 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import cookies from 'js-cookie'
-
-export type Entry = {
-    date: string,
-    text: string
-}
 
 export type StorageType = 'cookies' | 'localStorage';
 
-export function usePersistentEntryState(storageType: StorageType, storageAccessApi?: boolean): [Entry[], (entry: Entry) => void, () => void] {
-    const [entries, setEntries] = useState<Entry[]>([])
-    const { getStorageState, setStorageState } = useStorageState(storageType, storageAccessApi)
-
-    const refreshFromStorage = useCallback(() => {
-        getStorageState().then(state => setEntries(state))
-    }, [getStorageState, setEntries])
-
-    useEffect(() => {
-        refreshFromStorage()
-    }, [refreshFromStorage])
-
-    const addEntry = useCallback((entry: Entry) => {
-        setEntries((entries) => {
-            const newEntries = [...entries, entry]
-            setStorageState(newEntries)
-            return newEntries
-        })
-    }, [setStorageState, setEntries])
-
-    return [entries, addEntry, refreshFromStorage]
-}
-
-function useStorageState(storageType: StorageType, storageAccessApi?: boolean) {
+export function useStorageState<T>(storageType: StorageType, storageAccessApi: boolean, cookiesConverters: CookieStateConverter<T>) {
     const { getStorageValue, setStorageValue } = useStorageAccessMethods(storageType, storageAccessApi)
 
     return useMemo(() => ({
-        async setStorageState(state: Entry[]) {
-            await setStorageValue(STATE_COOKIE_NAME, cookieStateConverters.encode(state))
+        async setStorageState(state: T) {
+            await setStorageValue(STATE_COOKIE_NAME, cookiesConverters.encode(state))
         },
-        async getStorageState(): Promise<Entry[]> {
+        async getStorageState(): Promise<T> {
             const cookieValue = await getStorageValue(STATE_COOKIE_NAME)
-            return cookieStateConverters.decode(cookieValue)
+            return cookiesConverters.decode(cookieValue)
         },
-    }), [getStorageValue, setStorageValue])
+    }), [getStorageValue, setStorageValue, cookiesConverters])
 }
 
 function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: boolean) {
@@ -86,10 +58,16 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
 
 const STATE_COOKIE_NAME = 'showcookie2mestate'
 
-const cookieStateConverters = {
-    decode: (cookieValue: any): Entry[] => {
+export class CookieStateConverter<T> {
+    defaultValue: T
+
+    constructor(defaultValue: T) {
+        this.defaultValue = defaultValue
+    }
+
+    decode(cookieValue: any): T {
         if (!cookieValue) {
-            return []
+            return this.defaultValue
         }
         try {
             const decoded = window.atob('' + cookieValue)
@@ -97,10 +75,13 @@ const cookieStateConverters = {
         } catch (e) {
             console.error('Could not parse the cookie value')
             console.error(e)
-            return []
+            return this.defaultValue
         }
-    },
-    encode: (state: Entry[]) => window.btoa(encodeURIComponent(JSON.stringify(state))),
+    }
+
+    encode(state: T): string {
+        return window.btoa(encodeURIComponent(JSON.stringify(state)))
+    }
 }
 
 export function supportsStorageAccessAPI() {
