@@ -1,41 +1,35 @@
 import React, { useEffect, useState } from 'react'
 
-export const AccessStorageInfo = ()=>{
-    const [hasAccess,setHasAccess] = useState(false)
-    useEffect(()=>{
-        let intervalHandle : any;
+export const AccessStorageInfo = () => {
+    const [hasAccess, setHasAccess] = useState(false)
+    useEffect(() => {
+        let intervalHandle: any
 
-        hasStorageAccess().then(access=>{
-            if (access){
-                setHasAccess(true);
+        hasStorageAccess().then(access => {
+            if (access) {
+                setHasAccess(true)
             }
 
-            intervalHandle = setInterval(async ()=>{
-                try{
-                    //@ts-ignore
-                    await document.hasStorageAccess();
-                    setHasAccess(true)
-                    clearInterval(intervalHandle);
-                }
-                catch(e){}
-            },1000)
+            intervalHandle = setInterval(async () => {
+                const result = await hasStorageAccess()
+                setHasAccess(result)
+            }, 1000)
         })
 
-        return () => clearInterval(intervalHandle);
-    },[])
+        return () => clearInterval(intervalHandle)
+    }, [])
 
     return <div>
         Has first-party access: {JSON.stringify(hasAccess)}
     </div>
 }
 
-async function hasStorageAccess(){
-    try{
+async function hasStorageAccess() {
+    try {
         //@ts-ignore
-        await document.hasStorageAccess();
+        await document.hasStorageAccess()
         return true
-    }
-    catch(e){
-        return false;
+    } catch (e) {
+        return false
     }
 }
