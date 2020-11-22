@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router'
 import { Alert } from 'antd'
 
@@ -25,13 +25,24 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 }
 
 const NoteTakeContent: FC = (() => {
-    const { useStorageAccessAPI } = useStorage()
-    const [persistentUserName] = usePersistentUsernameState()
-    const [isUserNameSet, setIsUserNameSet] = useState<boolean|undefined>(undefined)
+    const { useStorageAccessAPI, storageType } = useStorage()
+    const [persistentUserName, , refreshFromStorage] = usePersistentUsernameState()
+    const [, setIsUserNameSet] = useState<boolean | undefined>(undefined)
+    const [storageError, setStorageError] = useState<boolean>(false)
 
-    useEffect(()=>{
-        setIsUserNameSet(!!persistentUserName);
-    },[persistentUserName, setIsUserNameSet])
+    const handleUsernameSet = useCallback(() => {
+        setIsUserNameSet(true)
+        refreshFromStorage()
+    }, [setIsUserNameSet, refreshFromStorage])
+
+    useEffect(() => {
+        setIsUserNameSet((isSet) => {
+            if (isSet === true && !persistentUserName) {
+                setStorageError(true)
+            }
+            return isSet
+        })
+    }, [persistentUserName, setIsUserNameSet, setStorageError])
 
 
     if (useStorageAccessAPI && !supportsStorageAccessAPI()) {
@@ -40,19 +51,20 @@ const NoteTakeContent: FC = (() => {
                 message="Error"
                 description="Storage access API is not supported by this browser."
                 type="error"
-                showIcon
-                banner
-                closable
-                closeText="close"
             />
         </div>
     }
 
+    const showNotes = !!persistentUserName && !storageError
+    const showUserName = !persistentUserName && !storageError
+    const showError = storageError
+
     return (
         <div>
             {useStorageAccessAPI && <AccessStorageInfo />}
-            {isUserNameSet === true && <Notes />}
-            {isUserNameSet === false && <UserName onChange={() => setIsUserNameSet(true)} />}
+            {showNotes && <Notes />}
+            {showUserName && <UserName onChange={handleUsernameSet} />}
+            {showError && <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
         </div>
     )
 })
