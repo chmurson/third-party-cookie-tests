@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Typography } from 'antd';
 
 export const AccessStorageInfo = () => {
     const [hasAccess, setHasAccess] = useState(false)
@@ -20,7 +21,7 @@ export const AccessStorageInfo = () => {
     }, [])
 
     return <div>
-        Has first-party access: {JSON.stringify(hasAccess)}
+        <Typography.Text type="secondary" >Has first-party access: {JSON.stringify(hasAccess)}</Typography.Text>
     </div>
 }
 
