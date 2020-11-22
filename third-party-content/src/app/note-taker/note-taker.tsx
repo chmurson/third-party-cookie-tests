@@ -9,6 +9,8 @@ import { StorageProvider, useStorage } from './storage-provider'
 import { StorageType } from './storage-provider/types'
 import { usePersistentUsernameState, UserName } from './username'
 
+type Timeout = ReturnType<typeof setTimeout>;
+
 export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
     const { params: { useStorageAccessAPI } } = useRouteMatch<{ useStorageAccessAPI: string }>()
 
@@ -27,22 +29,30 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 const NoteTakeContent: FC = (() => {
     const { useStorageAccessAPI, storageType } = useStorage()
     const [persistentUserName, , refreshFromStorage] = usePersistentUsernameState()
-    const [, setIsUserNameSet] = useState<boolean | undefined>(undefined)
     const [storageError, setStorageError] = useState<boolean>(false)
+    const [timeoutHandle, setTimeoutHandle] = useState<Timeout>()
 
     const handleUsernameSet = useCallback(() => {
-        setIsUserNameSet(true)
+        if (timeoutHandle != null) {
+            clearTimeout(timeoutHandle)
+        }
+
+        const localTimeoutHandle = setTimeout(() => {
+            setStorageError(true)
+        }, 500)
+
+        setTimeoutHandle(localTimeoutHandle)
         refreshFromStorage()
-    }, [setIsUserNameSet, refreshFromStorage])
+    }, [refreshFromStorage, timeoutHandle])
 
     useEffect(() => {
-        setIsUserNameSet((isSet) => {
-            if (isSet === true && !persistentUserName) {
-                setStorageError(true)
+        setTimeoutHandle(timeoutHandle => {
+            if (timeoutHandle != null) {
+                clearTimeout(timeoutHandle)
             }
-            return isSet
+            return timeoutHandle
         })
-    }, [persistentUserName, setIsUserNameSet, setStorageError])
+    }, [persistentUserName, setTimeoutHandle])
 
 
     if (useStorageAccessAPI && !supportsStorageAccessAPI()) {
@@ -64,7 +74,8 @@ const NoteTakeContent: FC = (() => {
             {useStorageAccessAPI && <AccessStorageInfo />}
             {showNotes && <Notes />}
             {showUserName && <UserName onChange={handleUsernameSet} />}
-            {showError && <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
+            {showError &&
+            <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
         </div>
     )
 })
