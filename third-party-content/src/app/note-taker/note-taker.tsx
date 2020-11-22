@@ -21,12 +21,12 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 
     return (
         <StorageProvider value={storageContextValue}>
-            <NoteTakeContent />
+            <NoteTakerContent />
         </StorageProvider>
     )
 }
 
-const NoteTakeContent: FC = (() => {
+const NoteTakerContent: FC = (() => {
     const { useStorageAccessAPI, storageType } = useStorage()
     const [persistentUserName, , refreshFromStorage] = usePersistentUsernameState()
     const [storageError, setStorageError] = useState<boolean>(false)
