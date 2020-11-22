@@ -4,6 +4,7 @@ import styles from './note-taker-styles.module.scss'
 import { Alert, Button, Input, Space, Typography } from 'antd'
 import { DateFormatter } from '../../DateFormatter'
 import { StorageType, supportsStorageAccessAPI, usePersistentEntryState } from './hooks'
+import { AccessStorageInfo } from '../access-storage-info'
 
 const { TextArea } = Input
 const { Text } = Typography
@@ -46,6 +47,7 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 
     return (
         <div>
+            {useStorageAccessAPI && <AccessStorageInfo />}
             <div className={styles.noteFormContainer}>
 
                 <TextArea rows={5} cols={30} value={text} onChange={e => setText(e.currentTarget.value)}
