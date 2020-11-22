@@ -1,20 +1,23 @@
 import { useMemo } from 'react'
 import cookies from 'js-cookie'
+import { useStorage } from './storage-provider'
+import { StorageType } from './storage-provider/types'
 
-export type StorageType = 'cookies' | 'localStorage';
+export function useStorageState<T>(cookiesConverters: CookieStateConverter<T>, cookieName: string) {
+    const {storageType, useStorageAccessAPI} = useStorage();
+    const { getStorageValue, setStorageValue } = useStorageAccessMethods(storageType, useStorageAccessAPI)
 
-export function useStorageState<T>(storageType: StorageType, storageAccessApi: boolean, cookiesConverters: CookieStateConverter<T>) {
-    const { getStorageValue, setStorageValue } = useStorageAccessMethods(storageType, storageAccessApi)
+    const finalCookieName = BASE_COOKIE_NAME + cookieName;
 
     return useMemo(() => ({
         async setStorageState(state: T) {
-            await setStorageValue(STATE_COOKIE_NAME, cookiesConverters.encode(state))
+            await setStorageValue(finalCookieName, cookiesConverters.encode(state))
         },
         async getStorageState(): Promise<T> {
-            const cookieValue = await getStorageValue(STATE_COOKIE_NAME)
+            const cookieValue = await getStorageValue(finalCookieName)
             return cookiesConverters.decode(cookieValue)
         },
-    }), [getStorageValue, setStorageValue, cookiesConverters])
+    }), [getStorageValue, setStorageValue, cookiesConverters, finalCookieName])
 }
 
 function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: boolean) {
@@ -56,7 +59,8 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
     throw new Error(`${storageType} is not supported`)
 }
 
-const STATE_COOKIE_NAME = 'showcookie2mestate'
+const BASE_COOKIE_NAME = 'showcookie2me-'
+
 
 export class CookieStateConverter<T> {
     defaultValue: T

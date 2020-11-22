@@ -1,17 +1,18 @@
 import React, { FC, KeyboardEventHandler, useCallback, useMemo, useState } from 'react'
 import { DateFormatter } from '../../../DateFormatter'
-import { Alert, Input, Typography, Button, Space } from 'antd'
-import { StorageType } from '../hooks'
+import { Input, Typography, Button, Space } from 'antd'
 import { usePersistentEntryState } from './use-persistent-entry-state'
 import styles from './notes-styles.module.scss'
+import { usePersistentUsernameState } from '../username'
 
 const { TextArea } = Input
 const { Text } = Typography
 
 
-export const Notes: FC<{ storage: StorageType, useStorageAccessAPI: boolean }> = (({ storage, useStorageAccessAPI }) => {
+export const Notes: FC = (() => {
     const [text, setText] = useState<string>('')
-    const [entries, addEntry, refreshFromStorage] = usePersistentEntryState(storage, useStorageAccessAPI)
+    const [entries, addEntry, refreshFromStorage] = usePersistentEntryState()
+    const [userName] = usePersistentUsernameState()
     const sortedEntries = useMemo(() => entries.sort((x, y) => new Date(y.date).getTime() - new Date(x.date).getTime()), [entries])
 
     const handleSubmission = useCallback(() => {
@@ -37,7 +38,7 @@ export const Notes: FC<{ storage: StorageType, useStorageAccessAPI: boolean }> =
 
     return <div>
         <div className={styles.noteFormContainer}>
-
+            <p>Hello {userName}!</p>
             <TextArea rows={5} cols={30} value={text} onChange={e => setText(e.currentTarget.value)}
                       onKeyDown={onKeyPress} placeholder="Write a short note here" />
             <Space>
@@ -55,6 +56,7 @@ export const Notes: FC<{ storage: StorageType, useStorageAccessAPI: boolean }> =
                     <Text type="secondary"><DateFormatter date={new Date(entry.date)} /></Text>
                 </p>
             ))}
+            {sortedEntries.length === 0 && <Text type="secondary">Notes will appear here.</Text>}
         </div>
     </div>
 })
