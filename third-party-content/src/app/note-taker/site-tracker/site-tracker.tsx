@@ -8,7 +8,7 @@ export const SiteTracker: FC = () => {
     const [listOfVisitedHosts, setListVisitedOfHosts] = useState<string[]>([])
     const [isFirstVisitHere, setIsFirstVisitHere] = useState<boolean | undefined>(undefined)
     const { setStorageState, getStorageState } = useStorageState(cookieListOfHotsConverter, 'LIST_OF_HOSTS')
-    const currentHost = window.location.host
+    const currentHost = document.referrer || document.location.origin
 
     useEffect(() => {
         getStorageState().then(returnedListOfVisitedHosts => {
