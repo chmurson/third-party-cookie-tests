@@ -14,6 +14,7 @@ export const SiteTracker: FC = () => {
         getStorageState().then(returnedListOfVisitedHosts => {
 
             const hasUserBeenHereBefore = returnedListOfVisitedHosts.includes(currentHost)
+            console.log(returnedListOfVisitedHosts);
             setIsFirstVisitHere(returnedListOfVisitedHosts.length === 0)
 
             if (!hasUserBeenHereBefore) {
@@ -28,8 +29,8 @@ export const SiteTracker: FC = () => {
 
     return <div>
         <p>
-            {isFirstVisitHere && <Typography.Text>Hello, nice to mee you! </Typography.Text>}
-            {!isFirstVisitHere && <Typography.Text>Welcome back! </Typography.Text>}
+            {isFirstVisitHere === true && <Typography.Text>Hello, nice to mee you! </Typography.Text>}
+            {isFirstVisitHere === false && <Typography.Text>Welcome back! </Typography.Text>}
         </p>
         {hasVisitedOtherSites && <p>
             I've seen you on other sites.
