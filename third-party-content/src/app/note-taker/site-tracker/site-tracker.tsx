@@ -14,13 +14,13 @@ export const SiteTracker: FC = () => {
         getStorageState().then(returnedListOfVisitedHosts => {
 
             const hasUserBeenHereBefore = returnedListOfVisitedHosts.includes(currentHost)
+            setIsFirstVisitHere(returnedListOfVisitedHosts.length === 0)
 
             if (!hasUserBeenHereBefore) {
                 returnedListOfVisitedHosts.push(currentHost)
                 setStorageState(returnedListOfVisitedHosts)
             }
 
-            setIsFirstVisitHere(returnedListOfVisitedHosts.length === 0)
             setListVisitedOfHosts(returnedListOfVisitedHosts)
         })
     }, [setListVisitedOfHosts, setStorageState, currentHost, getStorageState])
