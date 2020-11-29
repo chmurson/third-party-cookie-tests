@@ -20,7 +20,7 @@ export const SiteTracker: FC = () => {
                 setStorageState(returnedListOfVisitedHosts)
             }
 
-            setIsFirstVisitHere(!hasUserBeenHereBefore)
+            setIsFirstVisitHere(returnedListOfVisitedHosts.length === 0)
             setListVisitedOfHosts(returnedListOfVisitedHosts)
         })
     }, [setListVisitedOfHosts, setStorageState, currentHost, getStorageState])
