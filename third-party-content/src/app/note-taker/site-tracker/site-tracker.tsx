@@ -14,7 +14,6 @@ export const SiteTracker: FC = () => {
         getStorageState().then(returnedListOfVisitedHosts => {
 
             const hasUserBeenHereBefore = returnedListOfVisitedHosts.includes(currentHost)
-            console.log(returnedListOfVisitedHosts);
             setIsFirstVisitHere(returnedListOfVisitedHosts.length === 0)
 
             if (!hasUserBeenHereBefore) {
