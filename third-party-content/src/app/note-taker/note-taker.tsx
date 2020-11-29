@@ -8,6 +8,7 @@ import { Notes } from './notes'
 import { StorageProvider, useStorage } from './storage-provider'
 import { StorageType } from './storage-provider/types'
 import { usePersistentUsernameState, UserName } from './username'
+import { SiteTracker } from './site-tracker'
 
 type Timeout = ReturnType<typeof setTimeout>;
 
@@ -72,6 +73,7 @@ const NoteTakerContent: FC = (() => {
     return (
         <div>
             {useStorageAccessAPI && <AccessStorageInfo />}
+            <SiteTracker />
             {showNotes && <Notes />}
             {showUserName && <UserName onChange={handleUsernameSet} />}
             {showError &&

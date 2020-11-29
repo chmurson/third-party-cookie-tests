@@ -20,7 +20,5 @@ export function usePersistentUsernameState(): [string, (userName: string) => voi
         setStorageState(newUsername)
     }, [setStorageState, setUsername])
 
-    console.log("@@"+userName);
-
     return [userName, setPersistentUserName, refreshFromStorage]
 }
