@@ -3,7 +3,7 @@ import { CookieStateConverter, useStorageState } from '../hooks'
 
 const usernameStateConverted = new CookieStateConverter<string>('')
 
-export function usePersistentUsernameState(): [string, (userName: string) => void, () => void, boolean] {
+export function usePersistentUsernameState(): [string, (userName: string) => void, () => void, boolean | undefined] {
     const [userName, setUsername] = useState<string>('')
     const { getStorageState, setStorageState, hasError } = useStorageState(usernameStateConverted, 'username')
 

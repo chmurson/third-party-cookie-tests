@@ -19,7 +19,7 @@ export function useStorageState<T>(cookiesConverters: CookieStateConverter<T>, c
         }
     }, [checkHandler])
 
-    return useMemo(() => ({
+    const { getStorageState, setStorageState } = useMemo(() => ({
         async setStorageState(state: T) {
             await setStorageValue(finalCookieName, cookiesConverters.encode(state))
 
@@ -36,8 +36,9 @@ export function useStorageState<T>(cookiesConverters: CookieStateConverter<T>, c
             const cookieValue = await getStorageValue(finalCookieName)
             return cookiesConverters.decode(cookieValue)
         },
-        hasError,
-    }), [getStorageValue, setStorageValue, cookiesConverters, finalCookieName, hasError])
+    }), [getStorageValue, setStorageValue, cookiesConverters, finalCookieName])
+
+    return { setStorageState, getStorageState, hasError }
 }
 
 function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: boolean) {

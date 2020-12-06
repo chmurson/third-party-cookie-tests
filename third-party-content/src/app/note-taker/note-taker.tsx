@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 import { useRouteMatch } from 'react-router'
 import { Alert } from 'antd'
 
@@ -9,8 +9,6 @@ import { StorageProvider, useStorage } from './storage-provider'
 import { StorageType } from './storage-provider/types'
 import { usePersistentUsernameState, UserName } from './username'
 import { SiteTracker } from './site-tracker'
-
-type Timeout = ReturnType<typeof setTimeout>;
 
 export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
     const { params: { useStorageAccessAPI } } = useRouteMatch<{ useStorageAccessAPI: string }>()
