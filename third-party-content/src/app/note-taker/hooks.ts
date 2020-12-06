@@ -1,23 +1,43 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import cookies from 'js-cookie'
 import { useStorage } from './storage-provider'
 import { StorageType } from './storage-provider/types'
 
 export function useStorageState<T>(cookiesConverters: CookieStateConverter<T>, cookieName: string) {
-    const {storageType, useStorageAccessAPI} = useStorage();
+    const checkHandler = useRef<NodeJS.Timeout>()
+    const [hasError, setHasError] = useState<boolean | undefined>(undefined)
+    const { storageType, useStorageAccessAPI } = useStorage()
     const { getStorageValue, setStorageValue } = useStorageAccessMethods(storageType, useStorageAccessAPI)
 
-    const finalCookieName = BASE_COOKIE_NAME + cookieName;
+    const finalCookieName = BASE_COOKIE_NAME + cookieName
+
+    useEffect(() => {
+        return () => {
+            if (checkHandler.current) {
+                clearTimeout(checkHandler.current)
+            }
+        }
+    }, [checkHandler])
 
     return useMemo(() => ({
         async setStorageState(state: T) {
             await setStorageValue(finalCookieName, cookiesConverters.encode(state))
+
+            if (checkHandler.current) {
+                clearTimeout(checkHandler.current)
+            }
+
+            checkHandler.current = setTimeout(() => {
+                const cookieValue = getStorageValue(finalCookieName)
+                setHasError(() => cookieValue == null)
+            }, 500)
         },
         async getStorageState(): Promise<T> {
             const cookieValue = await getStorageValue(finalCookieName)
             return cookiesConverters.decode(cookieValue)
         },
-    }), [getStorageValue, setStorageValue, cookiesConverters, finalCookieName])
+        hasError,
+    }), [getStorageValue, setStorageValue, cookiesConverters, finalCookieName, hasError])
 }
 
 function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: boolean) {
