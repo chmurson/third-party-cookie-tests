@@ -3,9 +3,9 @@ import { CookieStateConverter, useStorageState } from '../hooks'
 
 const usernameStateConverted = new CookieStateConverter<string>('')
 
-export function usePersistentUsernameState(): [string, (userName: string) => void, () => void] {
+export function usePersistentUsernameState(): [string, (userName: string) => void, () => void, boolean] {
     const [userName, setUsername] = useState<string>('')
-    const { getStorageState, setStorageState } = useStorageState(usernameStateConverted, 'username')
+    const { getStorageState, setStorageState, hasError } = useStorageState(usernameStateConverted, 'username')
 
     const refreshFromStorage = useCallback(() => {
         getStorageState().then(state => setUsername(state))
@@ -20,5 +20,5 @@ export function usePersistentUsernameState(): [string, (userName: string) => voi
         setStorageState(newUsername)
     }, [setStorageState, setUsername])
 
-    return [userName, setPersistentUserName, refreshFromStorage]
+    return [userName, setPersistentUserName, refreshFromStorage, hasError]
 }

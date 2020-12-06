@@ -29,32 +29,11 @@ export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
 
 const NoteTakerContent: FC = (() => {
     const { useStorageAccessAPI, storageType } = useStorage()
-    const [persistentUserName, , refreshFromStorage] = usePersistentUsernameState()
-    const [storageError, setStorageError] = useState<boolean>(false)
-    const [timeoutHandle, setTimeoutHandle] = useState<Timeout>()
+    const [persistentUserName, , refreshFromStorage, hasError] = usePersistentUsernameState()
 
     const handleUsernameSet = useCallback(() => {
-        if (timeoutHandle != null) {
-            clearTimeout(timeoutHandle)
-        }
-
-        const localTimeoutHandle = setTimeout(() => {
-            setStorageError(true)
-        }, 500)
-
-        setTimeoutHandle(localTimeoutHandle)
         refreshFromStorage()
-    }, [refreshFromStorage, timeoutHandle])
-
-    useEffect(() => {
-        setTimeoutHandle(timeoutHandle => {
-            if (timeoutHandle != null) {
-                clearTimeout(timeoutHandle)
-            }
-            return timeoutHandle
-        })
-    }, [persistentUserName, setTimeoutHandle])
-
+    }, [refreshFromStorage])
 
     if (useStorageAccessAPI && !supportsStorageAccessAPI()) {
         return <div>
@@ -66,9 +45,8 @@ const NoteTakerContent: FC = (() => {
         </div>
     }
 
-    const showNotes = !!persistentUserName && !storageError
-    const showUserName = !persistentUserName && !storageError
-    const showError = storageError
+    const showNotes = !!persistentUserName && !hasError
+    const showUserName = !persistentUserName && !hasError
 
     return (
         <div>
@@ -76,7 +54,7 @@ const NoteTakerContent: FC = (() => {
             <SiteTracker />
             {showNotes && <Notes />}
             {showUserName && <UserName onChange={handleUsernameSet} />}
-            {showError &&
+            {hasError &&
             <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
         </div>
     )
