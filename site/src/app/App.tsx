@@ -13,7 +13,11 @@ const storageOptions: { label: string, value: StorageType }[] = [{
 
 export function App() {
     const [iframeVisible, setIframeVisible] = useState<boolean>(false)
-    const { setUseRequestStorageAPI, setStorageType, localState: { useStorageAccessAPI, storageType } } = useLocalState()
+    const {
+        setUseRequestStorageAPI,
+        setStorageType,
+        localState: { useStorageAccessAPI, storageType },
+    } = useLocalState()
     const iframeUrl = useMemo(() => {
         const storageTypeToUrlPart: Record<StorageType, string> = {
             localStorage: 'local-storage',
@@ -70,10 +74,14 @@ const IFrameContent: FC<{ url: string, iframeVisible: boolean }> = memo(({ ifram
             URL: <a href={url} target="_blank" rel="noreferrer">{url}</a></p>
         <Spin size="large" spinning={spinning} wrapperClassName={styles.iframeSpinWrapper}
               className={styles.iframeSpinWrapper}>
-            <iframe title="A note maker"
-                    className={clsx(styles.iframe, { [styles.iframeVisible]: iframeVisible })}
-                    src={url}
-                    onLoad={() => setSpinning(false)}
+            <iframe
+                sandbox="allow-storage-access-by-user-activation
+                 allow-scripts
+                 allow-same-origin"
+                title="A note maker"
+                className={clsx(styles.iframe, { [styles.iframeVisible]: iframeVisible })}
+                src={url}
+                onLoad={() => setSpinning(false)}
             />
         </Spin>
     </>
