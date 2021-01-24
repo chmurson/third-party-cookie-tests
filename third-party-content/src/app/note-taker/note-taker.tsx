@@ -34,6 +34,7 @@ const NoteTakerContent: FC = (() => {
     }, [refreshFromStorage])
 
     const handleStorageAccessGranted = useCallback(() => {
+        localStorage.getItem("showcookie2me-username")
         refreshFromStorage()
     }, [refreshFromStorage])
 
