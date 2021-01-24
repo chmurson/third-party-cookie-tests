@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useMemo } from 'react'
 import { useRouteMatch } from 'react-router'
-import { Alert } from 'antd'
+import { Alert, Space } from 'antd'
 
 import { supportsStorageAccessAPI } from './hooks'
-import { AccessStorageInfo } from '../access-storage-info'
 import { Notes } from './notes'
 import { StorageProvider, useStorage } from './storage-provider'
 import { StorageType } from './storage-provider/types'
 import { usePersistentUsernameState, UserName } from './username'
 import { SiteTracker } from './site-tracker'
+import { AccessStoragePanel } from '../access-storage-panel'
 
 export const NoteTaker: FC<{ storage: StorageType }> = ({ storage }) => {
     const { params: { useStorageAccessAPI } } = useRouteMatch<{ useStorageAccessAPI: string }>()
@@ -48,12 +48,14 @@ const NoteTakerContent: FC = (() => {
 
     return (
         <div>
-            {useStorageAccessAPI && <AccessStorageInfo />}
-            <SiteTracker />
-            {showNotes && <Notes />}
-            {showUserName && <UserName onChange={handleUsernameSet} />}
-            {hasError &&
-            <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
+            <Space direction="vertical">
+                {useStorageAccessAPI && <AccessStoragePanel />}
+                <SiteTracker />
+                {showNotes && <Notes />}
+                {showUserName && <UserName onChange={handleUsernameSet} />}
+                {hasError &&
+                <Alert message={Error} description={`Saving user name in ${storageType} has failed.`} type="error" />}
+            </Space>
         </div>
     )
 })

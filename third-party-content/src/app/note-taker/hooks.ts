@@ -56,6 +56,7 @@ function useStorageAccessMethods(storageType: StorageType, storageAccessApi?: bo
             cookies.set(key, value)
         },
     }), [storageAccessApi])
+    
     const localStorage = useMemo(() => ({
         async getStorageValue(key: string) {
             if (storageAccessApi) {
