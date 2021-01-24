@@ -5,13 +5,16 @@ import { AccessStorageInfo } from './access-storage-info'
 import { AccessStorageRequester } from './access-storage-requester'
 import styles from './access-storage-panel.module.scss'
 
-type Props = {}
+type Props = {
+    onRequestSuccess?: () => void
+    onRequestFailed?: () => void
+}
 
-export const AccessStoragePanel: FC<Props> = (() => {
+export const AccessStoragePanel: FC<Props> = (({ onRequestFailed, onRequestSuccess }) => {
     return <div className={styles.container}>
         <Space>
             <AccessStorageInfo />
-            <AccessStorageRequester />
+            <AccessStorageRequester onFail={onRequestFailed} onSuccess={onRequestSuccess} />
         </Space>
     </div>
 })

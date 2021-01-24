@@ -33,6 +33,10 @@ const NoteTakerContent: FC = (() => {
         refreshFromStorage()
     }, [refreshFromStorage])
 
+    const handleStorageAccessGranted = useCallback(() => {
+        refreshFromStorage()
+    }, [refreshFromStorage])
+
     if (useStorageAccessAPI && !supportsStorageAccessAPI()) {
         return <div>
             <Alert
@@ -49,7 +53,7 @@ const NoteTakerContent: FC = (() => {
     return (
         <div>
             <Space direction="vertical">
-                {useStorageAccessAPI && <AccessStoragePanel />}
+                {useStorageAccessAPI && <AccessStoragePanel onRequestSuccess={handleStorageAccessGranted} />}
                 <SiteTracker />
                 {showNotes && <Notes />}
                 {showUserName && <UserName onChange={handleUsernameSet} />}

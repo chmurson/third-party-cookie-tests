@@ -1,4 +1,10 @@
 {
   "private": true,
-  "workspaces": ["common", "server", "site", "third-party-content"]
+  "workspaces": [
+    "common",
+    "server",
+    "site",
+    "third-party-content"
+  ],
+  "dependencies": {}
 }
